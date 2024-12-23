@@ -1,9 +1,9 @@
 import java.util.LinkedList;
 import java.util.List;
 public class Queuebild {
-    public static java.util.Queue<Integer> buildQueue(List<Integer> intersection) {
-        java.util.Queue<Integer> queue = new LinkedList<>();
-        for (Integer element : intersection) {
+    public static java.util.Queue<String> buildQueue(List<String> intersection) {
+        java.util.Queue<String> queue = new LinkedList<>();
+        for (String element : intersection) {
             queue.add(element);
         }
         for (int i = intersection.size() - 1; i >= 0; i--) {

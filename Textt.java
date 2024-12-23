@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class Textt {
-    public static int countUniqueLetters(String filePath) {
+    public static int Unique(String filePath) {
         Set<Character> uniqueLetters = new HashSet<>();
         try (Scanner scanner = new Scanner(new File(filePath))) {
             while (scanner.hasNextLine()) {

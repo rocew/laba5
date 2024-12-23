@@ -1,4 +1,3 @@
 public interface Meowable {
-        void meow();
-        int getMeowCount();
-    }
+    void meow();
+}

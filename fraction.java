@@ -1,16 +1,20 @@
 public class fraction implements Fractioninterface {
     private int numerator;
     private int denominator;
-    private Double cachedDoubleValue;
-
+    private final CachedValue cachedDoubleValue;
 
     public fraction(int numerator, int denominator) {
         if (denominator == 0) {
             throw new IllegalArgumentException("Знаменатель не может быть равен нулю.");
         }
+        if (denominator < 0) {
+            numerator = -numerator;
+            denominator = -denominator;
+        }
         this.numerator = numerator;
         this.denominator = denominator;
-        cachedDoubleValue = null;
+
+        this.cachedDoubleValue = new CachedValue(() -> (double) this.numerator / this.denominator);
     }
 
     public fraction add(fraction other) {
@@ -63,23 +67,40 @@ public class fraction implements Fractioninterface {
         return numerator + "/" + denominator;
     }
 
+    public double calculateDoubleValue() {
+        return (double) numerator / denominator;
+    }
+
     public double getDoubleValue() {
-        if (cachedDoubleValue == null) {
-            cachedDoubleValue = (double) numerator / denominator;
-        }
-        return cachedDoubleValue;
+        return cachedDoubleValue.getValue();
     }
 
     public void setNumerator(int numerator) {
         this.numerator = numerator;
-        cachedDoubleValue = null;
+        cachedDoubleValue.reset();
     }
 
     public void setDenominator(int denominator) {
         if (denominator == 0) {
             throw new IllegalArgumentException("Знаменатель не может быть равен нулю.");
         }
+        if (denominator < 0) {
+            numerator = -numerator;
+            denominator = -denominator;
+        }
         this.denominator = denominator;
-        cachedDoubleValue = null;
+        cachedDoubleValue.reset();
+    }
+
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        fraction other = (fraction) obj;
+
+        return this.numerator * other.denominator == this.denominator * other.numerator;
+    }
+
+    public int hashCode() {
+        return 31 * numerator + denominator;
     }
 }

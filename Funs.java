@@ -1,7 +1,11 @@
 public class Funs {
-    public static void meowsCare(Meowable... meowables) {
-        for (Meowable m : meowables) {
-            m.meow();
+    public static int[] meowsCare(Meowable... meowables) {
+        int[] meowCounts = new int[meowables.length];
+        for (int i = 0; i < meowables.length; i++) {
+            meowables[i].meow();
+            meowCounts[i]++;
         }
+        return meowCounts;
     }
 }
+

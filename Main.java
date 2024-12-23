@@ -11,7 +11,7 @@ import java.util.Queue;
 import java.util.stream.Collectors;
 import java.util.Scanner;
 public class Main {
-    public static <QueueFromList> void main(String[] args) {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите числитель и знаменатель для первой дроби:");
         int numerator1 = scanner.nextInt();
@@ -31,9 +31,12 @@ public class Main {
         scanner.nextLine();
         fraction f3 = new fraction(numerator3, denominator3);
 
-        System.out.println("\nВещественное значение первой дроби: " + f1.getDoubleValue());
-        System.out.println("Вещественное значение второй дроби: " + f2.getDoubleValue());
-        System.out.println("Вещественное значение третьей дроби: " + f3.getDoubleValue());
+        System.out.println("\nВещественное значение первой дроби: " + f1.calculateDoubleValue());
+        System.out.println("Вещественное значение первой дроби(кэш): " + f3.getDoubleValue());
+        System.out.println("\nВещественное значение второй дроби: " + f2.calculateDoubleValue());
+        System.out.println("Вещественное значение второй дроби(кэш): " + f2.getDoubleValue());
+        System.out.println("\nВещественное значение третьей дроби: " + f3.calculateDoubleValue());
+        System.out.println("Вещественное значение третьей дроби:(кэш) " + f3.getDoubleValue());
 
         fraction sumResult = f1.add(f2);
         fraction subtractResult = f1.subtract(f2);
@@ -57,6 +60,7 @@ public class Main {
         f1.setDenominator(newDenominator1);
 
         System.out.println("\nИзмененная первая дробь: " + f1);
+        System.out.println("Вещественное значение измененной первой дроби: " + f1.calculateDoubleValue());
         System.out.println("Вещественное значение измененной первой дроби: " + f1.getDoubleValue());
         sumResult = f1.add(f2);
         subtractResult = f1.subtract(f2);
@@ -71,26 +75,18 @@ public class Main {
         System.out.println("\nРезультат выражения f1.add(f2).divide(f3).subtract(5) с измененной первой дробью: " + complexResult);
 
         List<Cat> cats = new ArrayList<>();
-        int numCats;
-        System.out.print("Сколько котов вы хотите добавить? ");
-        numCats = scanner.nextInt();
-        scanner.nextLine();
-        for (int i = 0; i < numCats; i++) {
-            System.out.print("Введите имя кота " + (i + 1) + ": ");
-            String catName = scanner.nextLine();
-            cats.add(new Cat(catName));
-        }
-        Funs.meowsCare(cats.toArray(new Meowable[0]));
-        for (Cat cat : cats) {
-            System.out.println(cat.getName() + " мяукал: " + cat.getMeowCount() + " раз");
+        cats.add(new Cat("Барсик"));
+        int[] meowCounts = Funs.meowsCare(cats.toArray(new Meowable[0]));
+        for (int i = 0; i < cats.size(); i++) {
+            System.out.println(cats.get(i).getName() + " мяукал: " + meowCounts[i] + " раз");
 
             Listintersection li = new Listintersection();
-            List<Integer> l1 = li.readList(scanner, "L1");
-            List<Integer> l2 = li.readList(scanner, "L2");
-            List<Integer> l = li.intersect(l1, l2);
+            List<String> l1 = Listintersection.readList(scanner, "L1");
+            List<String> l2 = Listintersection.readList(scanner, "L2");
+            List<String> l = li.intersect(l1, l2);
             System.out.println("Список пересечения: " + l);
 
-            String filePath = "C:\\Users\\kokes\\Desktop\\ben2z.txt";
+            String filePath = "C:\\Users\\kokes\\Desktop\\benz.txt";
             try {
                 File file = new File(filePath);
                 Scanner fileScanner = new Scanner(file);
@@ -100,7 +96,7 @@ public class Main {
                 brandPrices.put(92, new ArrayList<>());
                 brandPrices.put(95, new ArrayList<>());
                 brandPrices.put(98, new ArrayList<>());
-                for (int i = 0; i < n; i++) {
+                for (int i1 = 0; i1 < n; i1++) {
                     String line = fileScanner.nextLine();
                     System.out.println("Считанные данные: " + line);
                     String[] parts = line.split(" ");
@@ -139,12 +135,12 @@ public class Main {
                 return;
             }
             System.out.println("Считанные данные:\n" + fileContent.toString());
-            int uniqueLetterCount = Textt.countUniqueLetters(filePath2);
+            int uniqueLetterCount = Textt.Unique(filePath2);
             if (uniqueLetterCount != -1) {
                 System.out.println("Количество уникальных букв: " + uniqueLetterCount);
 
                 if (!l.isEmpty()) {
-                    Queue<Integer> queue = Queuebild.buildQueue(l);
+                    Queue<String> queue = Queuebild.buildQueue(l);
                     System.out.println("Очередь, построенная по списку пересечения: " + queue);
                 } else {
                     System.out.println("Список пересечения пуст. Очередь не построена.");
@@ -154,14 +150,13 @@ public class Main {
                 int numPoints = scanner.nextInt();
                 scanner.nextLine();
                 List<point> points = new ArrayList<>();
-                for (int i = 0; i < numPoints; i++) {
-                    System.out.println("Введите координаты точки " + (i + 1) + " (x y):");
+                for (int i2 = 0; i2 < numPoints; i2++) {
+                    System.out.println("Введите координаты точки " + (i2 + 1) + " (x y):");
                     double x = scanner.nextDouble();
                     double y = scanner.nextDouble();
                     scanner.nextLine();
                     points.add(new point(x, y));
                 }
-
                 List<point> processedPoints = points.stream()
                         .distinct()
                         .sorted((p1, p2) -> Double.compare(p1.getX(), p2.getX()))
